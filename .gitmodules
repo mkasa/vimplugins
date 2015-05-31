@@ -1,0 +1,69 @@
+[submodule "AsyncCommand"]
+	path = AsyncCommand
+	url = https://github.com/idbrii/AsyncCommand.git
+[submodule "ghcmod-vim"]
+	path = ghcmod-vim
+	url = https://github.com/eagletmt/ghcmod-vim.git
+[submodule "jedi-vim"]
+	path = jedi-vim
+	url = https://github.com/davidhalter/jedi-vim.git
+[submodule "lushtags"]
+	path = lushtags
+	url = https://github.com/mkasa/lushtags.git
+[submodule "neco-ghc"]
+	path = neco-ghc
+	url = https://github.com/eagletmt/neco-ghc.git
+[submodule "neocomplete.vim"]
+	path = neocomplete.vim
+	url = https://github.com/Shougo/neocomplete.vim.git
+[submodule "neosnippet-snippets"]
+	path = neosnippet-snippets
+	url = https://github.com/Shougo/neosnippet-snippets.git
+[submodule "neosnippet.vim"]
+	path = neosnippet.vim
+	url = https://github.com/Shougo/neosnippet.vim.git
+[submodule "tabular"]
+	path = tabular
+	url = https://github.com/godlygeek/tabular
+[submodule "unite-haddock"]
+	path = unite-haddock
+	url = https://github.com/eagletmt/unite-haddock.git
+[submodule "unite-haskellimport"]
+	path = unite-haskellimport
+	url = https://github.com/ujihisa/unite-haskellimport.git
+[submodule "unite.vim"]
+	path = unite.vim
+	url = https://github.com/Shougo/unite.vim.git
+[submodule "vim-bookmarks"]
+	path = vim-bookmarks
+	url = https://github.com/MattesGroeger/vim-bookmarks
+[submodule "vim-colors-solarized"]
+	path = vim-colors-solarized
+	url = https://github.com/altercation/vim-colors-solarized
+[submodule "vimproc.vim"]
+	path = vimproc.vim
+	url = https://github.com/Shougo/vimproc.vim
+[submodule "vim-syntax-shakespeare"]
+	path = vim-syntax-shakespeare
+	url = https://github.com/pbrisbin/vim-syntax-shakespeare.git
+[submodule "yaml-vim"]
+	path = yaml-vim
+	url = https://github.com/mrk21/yaml-vim.git
+[submodule "dash.vim"]
+	path = dash.vim
+	url = https://github.com/rizzatti/dash.vim.git
+[submodule "vim2hs"]
+	path = vim2hs
+	url = https://github.com/dag/vim2hs.git
+[submodule "vim-x10"]
+	path = vim-x10
+	url = https://github.com/evandrewry/vim-x10.git
+[submodule "vim-ref"]
+	path = vim-ref
+	url = https://github.com/thinca/vim-ref.git
+[submodule "vim-grammarous"]
+	path = vim-grammarous
+	url = https://github.com/rhysd/vim-grammarous.git
+[submodule "vim-quickrun"]
+	path = vim-quickrun
+	url = https://github.com/thinca/vim-quickrun.git
