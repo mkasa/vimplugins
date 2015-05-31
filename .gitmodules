@@ -64,3 +64,6 @@
 [submodule "vim-quickrun"]
 	path = vim-quickrun
 	url = https://github.com/thinca/vim-quickrun.git
+[submodule "AsyncCommand"]
+	path = AsyncCommand
+	url = https://github.com/idbrii/AsyncCommand.git
