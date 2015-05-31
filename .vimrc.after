@@ -1,0 +1,120 @@
+" Generic Settings
+"
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+
+" Syntactic
+"
+let g:syntastic_cpp_compiler = '/usr/local/bin/g++-4.8'
+let g:syntastic_cpp_compiler_options = ' -std=c++11'
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_haskell_checkers = ['ghc_mod']
+let g:syntastic_mode_map = {
+     \ "mode": "active",
+     \ "passive_filetypes": ["haskell"] }
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+" Solarize
+"
+set background=dark
+" let g:solarized_termcolors=256
+colorscheme solarized
+
+" Keybinds
+"
+function! BufferKeyBind()
+    nnoremap <buffer> <space>s :SyntasticCheck<Cr>
+    nnoremap <buffer> <space>S :SyntasticToggleMode<Cr>
+    nnoremap <buffer> <space>e :Errors<Cr>
+    nnoremap <buffer> <space>E :lclose<Cr>
+    nnoremap <buffer> <space>t :Tabularize /
+    nmap <silent> <space>r <Plug>(quickrun)
+    nmap <silent> <leader>z <Plug>DashSearch
+    nmap <silent> <leader>Z <Plug>DashGlobalSearch
+endfunction
+
+function! BufferKeyBindHaskell()
+    nnoremap <Nul> :GhcModType<Return>
+    nnoremap <buffer> <space>I :<C-u>Unite haskellimport<Cr>
+    nnoremap <buffer> <space>i :<C-u>UniteWithCursorWord haskellimport<Cr>
+    nnoremap <buffer> <space>O :<C-u>Unite hoogle<Cr>
+    nnoremap <buffer> <space>o :<C-u>UniteWithCursorWord -auto-preview hoogle<Cr>
+    nnoremap <buffer> <space>D :<C-u>Unite haddock<Cr>
+    nnoremap <buffer> <space>d :<C-u>UniteWithCursorWord haddock<Cr>
+    nnoremap <buffer> <space>c :GhcModCheckAsync<Cr>
+    nnoremap <buffer> <space>l :GhcModLintAsync<Cr>
+endfunction
+
+
+" Vim-bookmark
+"
+let g:bookmark_sign = '='
+let g:bookmark_annotation_sign = '#'
+let g:bookmark_manage_per_buffer = 1
+let g:bookmark_no_default_key_mappings = 1
+function! BookmarkMapKeys()
+    nmap mm :BookmarkToggle<CR>
+    nmap mi :BookmarkAnnotate<CR>
+    nmap mj :BookmarkNext<CR>
+    nmap mk :BookmarkPrev<CR>
+    nmap ma :BookmarkShowAll<CR>
+    nmap mc :BookmarkClear<CR>
+    nmap mx :BookmarkClearAll<CR>
+endfunction
+function! BookmarkUnmapKeys()
+    unmap mm
+    unmap mi
+    unmap mj
+    unmap mk
+    unmap ma
+    unmap mc
+    unmap mx
+endfunction
+autocmd BufEnter * :call BookmarkMapKeys()
+autocmd BufEnter NERD_tree_* :call BookmarkUnmapKeys()
+autocmd BufEnter * :call BufferKeyBind()
+autocmd BufEnter *.hs :call BufferKeyBindHaskell()
+
+
+" Unite
+"
+let g:unite_source_haddock_browser = 'w3m'
+call unite#custom_default_action('haddock', 'browse_remote')
+
+
+" Jedi
+"
+function! JediSettings()
+    let g:jedi#popup_select_first = 0
+    let g:jedi#popup_on_dot = 0
+    let g:jedi#completions_enabled = 0
+    let g:jedi#auto_vim_configuration = 0
+endfunction
+autocmd FileType python setlocal completeopt-=preview
+autocmd FileType python setlocal omnifunc=jedi#completions
+autocmd FileType python :call JediSettings()
+
+
+" Neco-ghc
+"
+let g:necoghc_enable_detailed_browse = 1
+" let g:necoghc_debug = 1
+
+
+" Neosnippet 
+"
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" For snippet_complete marker.
+if has('conceal')
+    set conceallevel=2 concealcursor=niv
+endif
+
