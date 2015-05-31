@@ -1,6 +1,3 @@
-[submodule "AsyncCommand"]
-	path = AsyncCommand
-	url = https://github.com/idbrii/AsyncCommand.git
 [submodule "ghcmod-vim"]
 	path = ghcmod-vim
 	url = https://github.com/eagletmt/ghcmod-vim.git
