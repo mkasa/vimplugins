@@ -1,3 +1,18 @@
+" Get running OS
+" See http://unix.stackexchange.com/questions/40047/vim-script-check-running-platform
+let os = ""
+if has("win32")
+    let os="win"
+else
+    if has("unix")
+        let s:uname = system("uname")
+        if s:uname == "Darwin"
+            let os="mac"
+        else
+            let os="unix"
+        endif
+    endif
+endif
 
 " Always use Neocomplete
 let g:neocomplete#enable_at_startup = 1
@@ -10,3 +25,4 @@ endif
 let g:neocomplete#force_omni_input_patterns.python =
          \ '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
          " alternative pattern: '\h\w*\|[^. \t]\.\w*'
+
