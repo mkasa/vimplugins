@@ -64,3 +64,6 @@
 [submodule "AsyncCommand"]
 	path = AsyncCommand
 	url = https://github.com/idbrii/AsyncCommand.git
+[submodule "neco-ghc"]
+	path = neco-ghc
+	url = https://github.com/mkasa/neco-ghc
