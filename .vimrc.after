@@ -49,6 +49,17 @@ function! BufferKeyBindHaskell()
     nnoremap <buffer> <space>d :<C-u>UniteWithCursorWord haddock<Cr>
     nnoremap <buffer> <space>c :GhcModCheckAsync<Cr>
     nnoremap <buffer> <space>l :GhcModLintAsync<Cr>
+    nnoremap <space>jfa :call cscope#findInteractive(expand('<cword>'))<CR>
+    " nnoremap <space>jl :call ToggleLocationList()<CR>
+    nnoremap <space>jl :copen<CR>
+    nnoremap <space>jfs :cs f s <C-R>=expand('<cword>')<CR><CR>
+    nnoremap <space>jfg :cs f g <C-R>=expand('<cword>')<CR><CR>
+    nnoremap <space>jfd :cs f d <C-R>=expand('<cword>')<CR><CR>
+    nnoremap <space>jfc :cs f c <C-R>=expand('<cword>')<CR><CR>
+    nnoremap <space>jft :cs f t <C-R>=expand('<cword>')<CR><CR>
+    nnoremap <space>jfe :cs f e <C-R>=expand('<cword>')<CR><CR>
+    nnoremap <space>jff :cs f f <C-R>=expand('<cword>')<CR><CR>
+    nnoremap <space>jfi :cs f i <C-R>=expand('<cword>')<CR><CR>
 endfunction
 
 
@@ -84,7 +95,8 @@ autocmd BufEnter *.hs :call BufferKeyBindHaskell()
 
 " Unite
 "
-let g:unite_source_haddock_browser = 'w3m'
+" let g:unite_source_haddock_browser = 'lynx'
+let g:unite_source_haddock_browser = 'env TERM=xterm-color elinks'
 call unite#custom_default_action('haddock', 'browse_remote')
 
 

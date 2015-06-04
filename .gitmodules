@@ -67,3 +67,6 @@
 [submodule "neco-ghc"]
 	path = neco-ghc
 	url = https://github.com/mkasa/neco-ghc
+[submodule "cscope.vim"]
+	path = cscope.vim
+	url = https://github.com/vim-scripts/cscope.vim
