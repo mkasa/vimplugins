@@ -1,15 +1,15 @@
 " Get running OS
 " See http://unix.stackexchange.com/questions/40047/vim-script-check-running-platform
-let os = ""
+let g:os = ""
 if has("win32")
-    let os="win"
+    let g:os="win"
 else
     if has("unix")
         let s:uname = system("uname")
         if s:uname == "Darwin"
-            let os="mac"
+            let g:os="mac"
         else
-            let os="unix"
+            let g:os="unix"
         endif
     endif
 endif
