@@ -3,8 +3,12 @@ default:
 	git submodule foreach git pull
 	cd ${HOME}/.vim; rake
 
-init: ${HOME}/.vim/Rakefile default
+init: ${HOME}/.vim/Rakefile default submodules
 	cd ${HOME}/.janus; ${MAKE} -c vimproc
+
+submodules:
+	cd ${HOME}/.janus; git submodule init
+	cd ${HOME}/.janus; git submodule update
 
 ghc:
 	cabal install ghc-mod
