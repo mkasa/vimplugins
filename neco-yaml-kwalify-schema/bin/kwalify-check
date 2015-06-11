@@ -24,6 +24,9 @@ def debug_region_print(s)
 end
 
 def find_schema_file_from_yaml(yaml_file_name)
+    retval = { :schema => nil,
+               :validator => nil,
+               :preview => false }
     schema_file = nil
     custom_validator = nil
     # Find a schema file
@@ -32,22 +35,24 @@ def find_schema_file_from_yaml(yaml_file_name)
             if line =~ /#\s*schema:\s*(\S+)/i
                 base_name = $1
                 if base_name.start_with?('/') || File.exist?(base_name)
-                    schema_file = base_name
+                    retval[:schema] = base_name
                 else
-                    schema_file = ENV['HOME'] + '/.kwalify/' + base_name
+                    retval[:schema] = ENV['HOME'] + '/.kwalify/' + base_name
                 end
             elsif line =~ /#\s*validator:\s*(\S.*)/i
                 base_name = $1
                 if base_name.start_with?('/') || File.exist?(base_name)
-                    custom_validator = base_name
+                    retval[:validator] = base_name
                 else
-                    custom_validator = ENV['HOME'] + '/.kwalify/' + base_name
+                    retval[:validator] = ENV['HOME'] + '/.kwalify/' + base_name
                 end
+            elsif line =~ /#\s*preview:\s*(\S+)/i
+                retval[:preview] = true
             end
         end
     end
     debug_puts "Schema_file=#{schema_file}, Custom_Validator=#{custom_validator}"
-    return [schema_file, custom_validator]
+    return retval
 end
 
 def validate_yaml_file(input_file_name, schema_file_name, custom_validator)
@@ -99,7 +104,7 @@ def validate_yaml_file(input_file_name, schema_file_name, custom_validator)
 
     # Use a custom validator if any
     if custom_validator != nil
-        cmd = "#{custom_validator} #{schema_file_name}"
+        cmd = "#{custom_validator} #{input_file_name}"
         debug_puts "CMD: #{cmd}"
         result = `#{cmd}`
         if result =~ /(INVALID|ERROR)/
@@ -137,9 +142,12 @@ if ARGV.empty?
     exit 2
 end
 input_file_name = ARGV.shift
-(schema_file_name, custom_validator) = find_schema_file_from_yaml(input_file_name)
+conf = find_schema_file_from_yaml(input_file_name)
 if $option[:do_completion]
+    if conf[:preview]
+        puts "PREVIEW\tON"
+    end
 else
-    validate_yaml_file(input_file_name, schema_file_name, custom_validator)
+    validate_yaml_file(input_file_name, conf[:schema], conf[:validator])
 end
 
