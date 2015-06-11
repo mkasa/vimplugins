@@ -1,0 +1,145 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'yaml'
+
+def debug_print(s)
+    if $debugging
+        $stderr.print s
+    end
+end
+
+def debug_puts(s)
+    if $debugging
+        $stderr.puts s
+    end
+end
+
+def debug_region_print(s)
+    if $debugging
+        $stderr.puts "=========================="
+        $stderr.puts s
+        $stderr.puts "=========================="
+    end
+end
+
+def find_schema_file_from_yaml(yaml_file_name)
+    schema_file = nil
+    custom_validator = nil
+    # Find a schema file
+    File.open(yaml_file_name, "rb").each do |line|
+        if line =~ /#(.*)/
+            if line =~ /#\s*schema:\s*(\S+)/i
+                base_name = $1
+                if base_name.start_with?('/') || File.exist?(base_name)
+                    schema_file = base_name
+                else
+                    schema_file = ENV['HOME'] + '/.kwalify/' + base_name
+                end
+            elsif line =~ /#\s*validator:\s*(\S.*)/i
+                base_name = $1
+                if base_name.start_with?('/') || File.exist?(base_name)
+                    custom_validator = base_name
+                else
+                    custom_validator = ENV['HOME'] + '/.kwalify/' + base_name
+                end
+            end
+        end
+    end
+    debug_puts "Schema_file=#{schema_file}, Custom_Validator=#{custom_validator}"
+    return [schema_file, custom_validator]
+end
+
+def validate_yaml_file(input_file_name, schema_file_name, custom_validator)
+    debug_puts "validate_yaml_file(#{input_file_name}, #{schema_file_name}, #{custom_validator})"
+    # Parse by yaml module
+    f = File.open(input_file_name, "rb")
+    begin
+        YAML.load(f.read)
+    rescue Psych::SyntaxError => e
+        error_str = e.to_s
+        if error_str =~ /at line (\d+) column (\d+)/
+            print input_file_name, ":", $1, ":", $2, ":", error_str, "\n"
+        else
+            print input_file_name, ":?:?:", error_str, "\n"
+        end
+        exit 0
+    end
+
+    # Validate by the schema
+    if !schema_file_name.nil?
+        if !File.exist?(schema_file_name)
+            print input_file_name, ":1:1: Schema file '#{schema_file_name}' does not exist.\n"
+            exit 0
+        end
+        verify_cmd = "kwalify -m #{schema_file_name}"
+        debug_puts "CMD: #{verify_cmd}"
+        verify_result = `#{verify_cmd}`
+        debug_region_print(verify_result)
+        if verify_result =~ /INVALID/
+            print input_file_name, ":1:1: Schema file '#{schema_file_name}' is invalid.\n"
+            print verify_result
+            exit 0
+        end
+        cmd = "kwalify -lf #{schema_file_name} #{input_file_name} 2>&1"
+        debug_puts "CMD: #{cmd}"
+        result = `#{cmd}`
+        debug_region_print(result)
+        if result =~ /(INVALID|ERROR)/
+            result.each_line do |line|
+                if line =~ /\(line (\d+)\)(.*)/
+                    print input_file_name, ":", $1, ":1:", $2, "\n"
+                elsif line =~ /^ERROR:\s*(.*?):(\d+):(\d+)\s+(.*)/
+                    print $1, ":", $2, ":", $3, ":", $4, "\n"
+                end
+            end
+            exit 0
+        end
+    end
+
+    # Use a custom validator if any
+    if custom_validator != nil
+        cmd = "#{custom_validator} #{schema_file_name}"
+        debug_puts "CMD: #{cmd}"
+        result = `#{cmd}`
+        if result =~ /(INVALID|ERROR)/
+            print result
+            exit 0
+        end
+    end
+
+    # Passed all checks
+    puts "Syntax OK"
+    exit 0
+
+end
+
+$debugging = false
+$option = {
+    :do_completion => false
+}
+$params = {
+    :comp_pos_line => nil,
+    :comp_pos_col  => nil
+}
+OptionParser.new do |opt|
+    opt.on('--complete', 'Show completion candidates')      { |v| $option[:do_completion] = true }
+    opt.on('--line=VALUE', 'Give the current line number')  { |v| $params[:comp_pos_line] = v.to_i }
+    opt.on('--col=VALUE', 'Give the current column number') { |v| $params[:comp_pos_col ] = v.to_i }
+    opt.on('--debug', 'Enable debugging')                   { $debugging = true }
+end
+
+if ARGV.empty?
+    puts "Usage: kwalify-check <input YAML file>"
+    puts "          Validate the input YAML file"
+    puts "       kwalify-check --complete <input YAML file> --line <line> --col <col>"
+    puts "          Show the completion candidates"
+    exit 2
+end
+input_file_name = ARGV.shift
+(schema_file_name, custom_validator) = find_schema_file_from_yaml(input_file_name)
+if $option[:do_completion]
+else
+    validate_yaml_file(input_file_name, schema_file_name, custom_validator)
+end
+
