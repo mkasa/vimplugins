@@ -26,7 +26,8 @@ end
 def find_schema_file_from_yaml(yaml_file_name)
     retval = { :schema => nil,
                :validator => nil,
-               :preview => false }
+               :preview => false,
+               :snippet => nil }
     schema_file = nil
     custom_validator = nil
     # Find a schema file
@@ -48,6 +49,13 @@ def find_schema_file_from_yaml(yaml_file_name)
                 end
             elsif line =~ /#\s*preview:\s*(\S+)/i
                 retval[:preview] = true
+            elsif line =~ /#\s*snippet:\s*(\S+)/i
+                base_name = $1
+                if base_name.start_with?('/') || File.exist?(base_name)
+                    retval[:snippet] = base_name
+                else
+                    retval[:snippet] = ENV['HOME'] + '/.kwalify/' + base_name
+                end
             end
         end
     end
@@ -146,6 +154,9 @@ conf = find_schema_file_from_yaml(input_file_name)
 if $option[:do_completion]
     if conf[:preview]
         puts "PREVIEW\tON"
+    end
+    if conf[:snippet]
+        puts "SNIPPET\t#{conf[:snippet]}"
     end
 else
     validate_yaml_file(input_file_name, conf[:schema], conf[:validator])
