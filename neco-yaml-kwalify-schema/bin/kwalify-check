@@ -127,6 +127,94 @@ def validate_yaml_file(input_file_name, schema_file_name, custom_validator)
 
 end
 
+def descend_by_context(schema_tree, context, trace_context)
+    # $stderr.puts "CONT[#{context}]"
+    if context.nil? || context == "" || context == "/" || context == "/@"
+        return schema_tree
+    end
+    # $stderr.puts "NON-RET"
+    if context =~ /^\/([^\/]+)(\/.*)?/
+        name = $1
+        rest = $2
+        # $stderr.puts "NAME[#{name}], REST[#{rest}]"
+        if name =~ /^\d+$/
+            if schema_tree['type'] == 'seq'
+                schema_tree = schema_tree['sequence'][0]
+            else
+                raise SyntaxError, "Cannot descend to seq, because type is not seq (#{schema_tree['type']} at trace=#{trace_context})"
+            end
+        else
+            if schema_tree['type'] == 'map'
+                schema_tree = schema_tree['mapping']
+                if schema_tree.has_key?(name)
+                    schema_tree = schema_tree[name]
+                else
+                    raise SyntaxError, "Cannot descend to map, because no such key (#{name} at trace=#{trace_context})"
+                end
+            else
+                raise SyntaxError, "Cannot descend to non-map by mapping key (#{name} at trace=#{trace_context}})"
+            end
+        end
+        return descend_by_context(schema_tree, rest, trace_context + "/" + name)
+    else
+        raise SyntaxError, "Illegal context at trace=#{trace_context}: #{context}"
+    end
+end
+
+def is_true(str)
+    return true if str =~ /^y(es)?$/i
+    return true if str =~ /^t(rue)$/i
+    return false
+end
+
+def show_completion_candidates(conf, context)
+    debug_puts "show_completion_candidates(#{conf}, #{context})"
+    if conf[:preview]
+        puts "PREVIEW\tON"
+    end
+    if conf[:snippet]
+        puts "SNIPPET\t#{conf[:snippet]}"
+    end
+    # Parse by yaml module
+    begin
+        f = File.open(conf[:schema], "rb")
+        yaml_obj = YAML.load(f.read)
+        yaml_subtree = descend_by_context(yaml_obj, context, "")
+        if yaml_subtree.has_key?('enum')
+            yaml_subtree['enum'].each do |v|
+                puts "WORD\t#{v}\t[Enum Value]\t"
+            end
+        else
+            next_type = yaml_subtree['type']
+            if next_type == "seq"
+                puts "WORD\t-\tSequence\t"
+            elsif next_type == "map"
+                yaml_subtree['mapping'].each do |key, value|
+                    print "WORD\t#{key}\t[MapKey"
+                    if value.has_key?('required') && is_true(value['required'])
+                        print " required"
+                    end
+                    print "]{"
+                    if value.has_key?('type')
+                        print value['type']
+                    else
+                        print "str"
+                    end
+                    print "}\t"
+                    if value.has_key?('desc')
+                        print value['desc'].gsub(/\n/,"\\n")
+                    end
+                    print "\n"
+                end
+            else
+                raise SyntaxError, "Type is not seq nor map. (#{next_type})"
+            end
+        end
+    rescue Psych::SyntaxError => e
+        puts "ERROR\t" + e
+    end
+end
+
 $debugging = false
 $option = {
     :do_completion => false
@@ -137,27 +225,22 @@ $params = {
 }
 OptionParser.new do |opt|
     opt.on('--complete', 'Show completion candidates')      { |v| $option[:do_completion] = true }
-    opt.on('--line=VALUE', 'Give the current line number')  { |v| $params[:comp_pos_line] = v.to_i }
-    opt.on('--col=VALUE', 'Give the current column number') { |v| $params[:comp_pos_col ] = v.to_i }
     opt.on('--debug', 'Enable debugging')                   { $debugging = true }
+    opt.parse!(ARGV)
 end
 
 if ARGV.empty?
     puts "Usage: kwalify-check <input YAML file>"
     puts "          Validate the input YAML file"
-    puts "       kwalify-check --complete <input YAML file> --line <line> --col <col>"
+    puts "       kwalify-check --complete <input YAML file> <context>"
     puts "          Show the completion candidates"
     exit 2
 end
 input_file_name = ARGV.shift
+current_context = ARGV.shift
 conf = find_schema_file_from_yaml(input_file_name)
 if $option[:do_completion]
-    if conf[:preview]
-        puts "PREVIEW\tON"
-    end
-    if conf[:snippet]
-        puts "SNIPPET\t#{conf[:snippet]}"
-    end
+    show_completion_candidates(conf, current_context)
 else
     validate_yaml_file(input_file_name, conf[:schema], conf[:validator])
 end
