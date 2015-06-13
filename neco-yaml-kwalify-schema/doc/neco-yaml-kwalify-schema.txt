@@ -1,0 +1,215 @@
+*neco-yaml-kwalify-schema.txt*  Completion and validation for YAML and kwalify
+
+==============================================================================
+CONTENTS                                        *neco-yaml-kwalify-schema.txt*
+
+    1.Intro...................................|YKSIntro|
+      1.1.What it provides....................|YKSWhatItProvides|
+    2.Installation............................|YKSInstallation|
+    3.Usage...................................|YKSUsage|
+      3.1.Advanced Usage......................|YKSAdvancedUsage|
+      3.2.Known Limitations...................|YKSLimitations|
+    4.Variables...............................|YKSVariables|
+    5.Changelog...............................|YKSChangelog|
+    6.License.................................|YKSLicense|
+
+==============================================================================
+1. Intro                                                            |YKSIntro|
+
+What is "neco-yaml-kwalify-schema"?
+
+Have you ever seen a config file in an application-specific domain specific
+language, such as http.conf for Apache, Nginx or whatever software? What about
+parameter files for analysis tools? They are usually structured files whose
+syntax is C-like or just TAB- or comma-delimited files with comments. Using
+application-specific file formats is evil because users have to learn
+different formats, infinitely consuming users' time by forcing them learn
+different file formats everyday. I believe most config/parameter/settings
+files could be described in more generic formats such as YAML, JSON, XML,
+etc.
+
+Among those generic formats, only YAML is suitable for hand-writing because
+it is easy to read and edit by ordinary text editors. JSON does not
+(officially) support comments, which is a real pain for editing config files
+or parameter files. XML is not bad for machine-generated files but is not
+a thing we edit manually because maintaining the integrity of open and close
+tags is a real challange. So, I thought generally we should use YAML for
+config files.  However, I often get frustrated every time I edit YAML files
+because I found it easier to edit XML files! XML files have a bunch of
+commercial editors that support various types of schema and they provide
+the perfect integrity of open/close tags. On top of that they allow us to
+use keyword completion. They can suggest us possible tags, considering
+schema files we provide. Why do we not have such convenient tools in
+open-source world, especially for YAML?
+
+I searched in the Internet, and found Kwalify
+(http://www.kuwata-lab.com/kwalify/), which is something like XML Schema
+but more lightweighted one. I thought Kwalify could meet most needs in
+config files and parameter files, so next we need input assisting tools!
+I use vim everyday, so why not implementing a new tool on vim?
+
+------------------------------------------------------------------------------
+1.1.What it provides                                       *YKSWhatItProvides*
+
+To make your life easier with YAML, neco-yaml-kwalify-schema allows you to do
+
+- syntax check (requires Syntastic)
+- schema validation (requires Kwalify)
+- code completion (requires Neocomplete)
+- autohelp (requires Neocomplete).
+
+You can do syntax checking using Syntastic, so if you write an invalid YAML,
+you see it in a second, with an indication of the error on screen.
+
+Your YAML is validated using Kwalify schema (you have to provide one), if you
+violate any constraints written in the schema file, you notice it immediately.
+You can provide a custom validator that checks constraints that are difficult
+to check by Kwalify. It can be used together with Kwalify so you can focus on
+what Kwalify does not provide.
+
+If you have Neocomplete, you are assisted by keyword completion. Let's say
+you are editing the infomation about books and a book has a required field,
+'authors' and 'isbns', then you would see authors and isbns for completion
+candidates. Of course if you miss any required fields (mapping in Kwalify),
+you will be notified immediately. Type mismatches, missing required fields,
+any other types of errors that can be detected by Kwalify are reported so
+users can fix them.
+
+Another feature is autohelp. Kwalify allows us to write a description for item
+in YAML. Let's say we are just typing 'isb' for 'isbn' field. You probably
+want to know if the field can have '-' (hyphen) or you should omit it.
+You probably want to know if it is a long 13-digit ISBN or a short 10-digit
+ISBN. Traditional config files usually have a bunch of comment lines in a
+template file so users can learn the answers to such questions. Autohelp shows
+you the description written in a schema file when you are just about to insert
+a field. When you type 'isb', then it shows you the description of 'isbn'
+field, just like you see a prototype declaration when you type in a function
+name. This feature allows you to push most comments in a schema file, keeping
+config files short, clean and tidy.
+
+==============================================================================
+2.Installation                                               *YKSInstallation*
+
+neco-yaml-kwalify-schema depends on the following plugins or software:
+
+- Syntastic (https://github.com/scrooloose/syntastic)
+- Kwalify (http://www.kuwata-lab.com/kwalify/)
+- Neocomplete (https://github.com/Shougo/neocomplete.vim)
+- Ruby (a support script of the plugin is written in Ruby)
+
+I don't explain how to install a vim plugin, but basically you can use
+whatever plugin managers, such as Pathogen or Neobundle.
+
+Next you need to put bin/kwalify-check in any directory on PATH. Please make
+sure that kwalify is also somewhere on PATH. If you see
+neco-yaml-kwalify-schema complain Kwalify or kwalify-check cannot be executed,
+please check the PATH environment variable. Note that PATH that vim uses
+might be different from what you use (e.g.,
+http://stackoverflow.com/questions/12691814/path-in-vim-is-different-from-which-in-shell-mac-osx)
+
+You might need to upgrade your vim to enjoy better syntax highlighting and
+better autoindent, because YAML support (i.e., the default YAML ftplugin) in
+older versions of vim is not good enough.
+
+==============================================================================
+3.Basic Usage                                                       *YKSUsage*
+
+Enable Neocomplete and Syntastic for YAML. If you installed the both plugins
+successfully, they are enabled by default so you do not have to do anything.
+If you only need syntax checking, you are already all set.
+
+To turn on schema validation, you need to tell the plugin where you put the
+schema file. We use a comment for that. We assume the schema file is at
+/home/foo/schema.yml, then you need to put the following comment in a YAML
+file you are editing.
+
+	# Schema: /home/foo/schema.yml
+
+This comment can be anywhere in the file so you can put it in the head of
+the file or the tail of the file, or even in the middle. It is searched by
+a simple regular expression, so it can be put in non-comment regions if
+you wish, although not recommended. Anyway, the plugin passes to Kwalify
+/home/foo/schema.yml as a schema file. If you specify a relative path,
+it becomes relative to "~/.kwalify". Once you set this comment, you see
+the code completion and the autohelp working.
+
+------------------------------------------------------------------------------
+3.1.Advanced Usage                                          *YKSAdvancedUsage*
+
+3.1.1. Custom Validator
+
+The schema of Kwalify is very simple, which means that a constaint we need
+in a real life may not be well-expressed in the Kwalify schema. You can write
+a custom validator, which is essentially a program that inputs a YAML file
+and outputs an error. Again, you need to put a comment:
+
+	# Validator: book_validator.rb
+
+The plugin runs the specified custom validator when a simple YAML syntax
+checking and Kwalify validation pass (so you can assume the input always
+passes YAML syntax check and Kwalify validation). The output of a custom
+validator must be in the following form:
+
+	file name:line:col:message
+
+An example is shown below.
+
+	book1.yml:34:4:ERROR: Kindle store requires the cheapest price.
+
+3.1.2. Snippet
+
+We often use a snippet for programming. Snippets are useful for YAML as well.
+When you input a book info, you wish to see all the required fields appear
+below the book key. You can create and register such snippets to help us
+write YAML files quickly. However, a snippet plugin usually uses a single
+snippet file for one particular file type, which means we are allowed to
+use a single snippet file for all YAML files, although we need a custom
+snippet for diffrent types of YAML files (probably with different schema).
+
+If you use NeoSnipeet (https://github.com/Shougo/neosnippet.vim), you can
+switch the snippet file you use according to a comment in a YAML file.
+
+	# Snippet: book_validator.rb
+
+Again, a relative path is relative to "~/.kwalify" (without quotes).
+
+3.1.3. Automatic Preview Enabling
+
+Preview of Neocomplete is often annoying for programming, so often users
+turn it off because they do not like to see the cursor jumping up and down
+as the height of the preview window changes. Autodoc plugin might help,
+but let's put it aside. If you usually turn off the preview option but
+wish to use it for a particular YAML file, put the following comment:
+
+	# Preview: true
+
+Then the preview option is set for this buffer.
+
+------------------------------------------------------------------------------
+3.2.Known Limitations                                         *YKSLimitations*
+
+Code completion does not work for flow style YAML. To support it, we need to
+implement a partial parser for YAML, which might require ten times more
+development time.
+
+==============================================================================
+4.Variables                                                     *YKSVariables*
+
+g:kwalify_check_debug
+
+	When it is set to non-zero, debug messages are output.
+	Do not turn it on unless you need to debug the plugin.
+
+==============================================================================
+5.Changelog                                                     *YKSChangelog*
+
+2015 Jun 14. Ver 1.0
+	First public release.
+
+==============================================================================
+6.License                                                         *YKSLicense*
+
+neco-yaml-kwalify-schema is distributed under the MIT license.
+
+------------------------------------------------------------------------------
+  vim:tw=78:ts=8:ft=help:norl:
