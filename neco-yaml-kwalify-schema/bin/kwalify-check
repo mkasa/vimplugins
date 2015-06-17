@@ -1,0 +1,247 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'yaml'
+
+def debug_print(s)
+    if $debugging
+        $stderr.print s
+    end
+end
+
+def debug_puts(s)
+    if $debugging
+        $stderr.puts s
+    end
+end
+
+def debug_region_print(s)
+    if $debugging
+        $stderr.puts "=========================="
+        $stderr.puts s
+        $stderr.puts "=========================="
+    end
+end
+
+def find_schema_file_from_yaml(yaml_file_name)
+    retval = { :schema => nil,
+               :validator => nil,
+               :preview => false,
+               :snippet => nil }
+    schema_file = nil
+    custom_validator = nil
+    # Find a schema file
+    File.open(yaml_file_name, "rb").each do |line|
+        if line =~ /#(.*)/
+            if line =~ /#\s*schema:\s*(\S+)/i
+                base_name = $1
+                if base_name.start_with?('/') || File.exist?(base_name)
+                    retval[:schema] = base_name
+                else
+                    retval[:schema] = ENV['HOME'] + '/.kwalify/' + base_name
+                end
+            elsif line =~ /#\s*validator:\s*(\S.*)/i
+                base_name = $1
+                if base_name.start_with?('/') || File.exist?(base_name)
+                    retval[:validator] = base_name
+                else
+                    retval[:validator] = ENV['HOME'] + '/.kwalify/' + base_name
+                end
+            elsif line =~ /#\s*preview:\s*(\S+)/i
+                retval[:preview] = true
+            elsif line =~ /#\s*snippet:\s*(\S+)/i
+                base_name = $1
+                if base_name.start_with?('/') || File.exist?(base_name)
+                    retval[:snippet] = base_name
+                else
+                    retval[:snippet] = ENV['HOME'] + '/.kwalify/' + base_name
+                end
+            end
+        end
+    end
+    debug_puts "Schema_file=#{schema_file}, Custom_Validator=#{custom_validator}"
+    return retval
+end
+
+def validate_yaml_file(input_file_name, schema_file_name, custom_validator)
+    debug_puts "validate_yaml_file(#{input_file_name}, #{schema_file_name}, #{custom_validator})"
+    # Parse by yaml module
+    f = File.open(input_file_name, "rb")
+    begin
+        YAML.load(f.read)
+    rescue Psych::SyntaxError => e
+        error_str = e.to_s
+        if error_str =~ /at line (\d+) column (\d+)/
+            print input_file_name, ":", $1, ":", $2, ":", error_str, "\n"
+        else
+            print input_file_name, ":?:?:", error_str, "\n"
+        end
+        exit 0
+    end
+
+    # Validate by the schema
+    if !schema_file_name.nil?
+        if !File.exist?(schema_file_name)
+            print input_file_name, ":1:1: Schema file '#{schema_file_name}' does not exist.\n"
+            exit 0
+        end
+        verify_cmd = "kwalify -m #{schema_file_name}"
+        debug_puts "CMD: #{verify_cmd}"
+        verify_result = `#{verify_cmd}`
+        debug_region_print(verify_result)
+        if verify_result =~ /INVALID/
+            print input_file_name, ":1:1: Schema file '#{schema_file_name}' is invalid.\n"
+            print verify_result
+            exit 0
+        end
+        cmd = "kwalify -lf #{schema_file_name} #{input_file_name} 2>&1"
+        debug_puts "CMD: #{cmd}"
+        result = `#{cmd}`
+        debug_region_print(result)
+        if result =~ /(INVALID|ERROR)/
+            result.each_line do |line|
+                if line =~ /\(line (\d+)\)(.*)/
+                    print input_file_name, ":", $1, ":1:", $2, "\n"
+                elsif line =~ /^ERROR:\s*(.*?):(\d+):(\d+)\s+(.*)/
+                    print $1, ":", $2, ":", $3, ":", $4, "\n"
+                end
+            end
+            exit 0
+        end
+    end
+
+    # Use a custom validator if any
+    if custom_validator != nil
+        cmd = "#{custom_validator} #{input_file_name}"
+        debug_puts "CMD: #{cmd}"
+        result = `#{cmd}`
+        if result =~ /(INVALID|ERROR)/
+            print result
+            exit 0
+        end
+    end
+
+    # Passed all checks
+    puts "Syntax OK"
+    exit 0
+
+end
+
+def descend_by_context(schema_tree, context, trace_context)
+    # $stderr.puts "CONT[#{context}]"
+    if context.nil? || context == "" || context == "/" || context == "/@"
+        return schema_tree
+    end
+    # $stderr.puts "NON-RET"
+    if context =~ /^\/([^\/]+)(\/.*)?/
+        name = $1
+        rest = $2
+        # $stderr.puts "NAME[#{name}], REST[#{rest}]"
+        if name =~ /^\d+$/
+            if schema_tree['type'] == 'seq'
+                schema_tree = schema_tree['sequence'][0]
+            else
+                raise SyntaxError, "Cannot descend to seq, because type is not seq (#{schema_tree['type']} at trace=#{trace_context})"
+            end
+        else
+            if schema_tree['type'] == 'map'
+                schema_tree = schema_tree['mapping']
+                if schema_tree.has_key?(name)
+                    schema_tree = schema_tree[name]
+                else
+                    raise SyntaxError, "Cannot descend to map, because no such key (#{name} at trace=#{trace_context})"
+                end
+            else
+                raise SyntaxError, "Cannot descend to non-map by mapping key (#{name} at trace=#{trace_context}})"
+            end
+        end
+        return descend_by_context(schema_tree, rest, trace_context + "/" + name)
+    else
+        raise SyntaxError, "Illegal context at trace=#{trace_context}: #{context}"
+    end
+end
+
+def is_true(str)
+    return true if str =~ /^y(es)?$/i
+    return true if str =~ /^t(rue)$/i
+    return false
+end
+
+def show_completion_candidates(conf, context)
+    debug_puts "show_completion_candidates(#{conf}, #{context})"
+    if conf[:preview]
+        puts "PREVIEW\tON"
+    end
+    if conf[:snippet]
+        puts "SNIPPET\t#{conf[:snippet]}"
+    end
+    # Parse by yaml module
+    begin
+        f = File.open(conf[:schema], "rb")
+        yaml_obj = YAML.load(f.read)
+        yaml_subtree = descend_by_context(yaml_obj, context, "")
+        if yaml_subtree.has_key?('enum')
+            yaml_subtree['enum'].each do |v|
+                puts "WORD\t#{v}\t[Enum Value]\t"
+            end
+        else
+            next_type = yaml_subtree['type']
+            if next_type == "seq"
+                puts "WORD\t-\tSequence\t"
+            elsif next_type == "map"
+                yaml_subtree['mapping'].each do |key, value|
+                    print "WORD\t#{key}\t[MapKey"
+                    if value.has_key?('required') && is_true(value['required'])
+                        print " required"
+                    end
+                    print "]{"
+                    if value.has_key?('type')
+                        print value['type']
+                    else
+                        print "str"
+                    end
+                    print "}\t"
+                    if value.has_key?('desc')
+                        print value['desc'].gsub(/\n/,"\\n")
+                    end
+                    print "\n"
+                end
+            else
+                raise SyntaxError, "Type is not seq nor map. (#{next_type})"
+            end
+        end
+    rescue Psych::SyntaxError => e
+        puts "ERROR\t" + e
+    end
+end
+
+$debugging = false
+$option = {
+    :do_completion => false
+}
+$params = {
+    :comp_pos_line => nil,
+    :comp_pos_col  => nil
+}
+OptionParser.new do |opt|
+    opt.on('--complete', 'Show completion candidates')      { |v| $option[:do_completion] = true }
+    opt.on('--debug', 'Enable debugging')                   { $debugging = true }
+    opt.parse!(ARGV)
+end
+
+if ARGV.empty?
+    puts "Usage: kwalify-check <input YAML file>"
+    puts "          Validate the input YAML file"
+    puts "       kwalify-check --complete <input YAML file> <context>"
+    puts "          Show the completion candidates"
+    exit 2
+end
+input_file_name = ARGV.shift
+current_context = ARGV.shift
+conf = find_schema_file_from_yaml(input_file_name)
+if $option[:do_completion]
+    show_completion_candidates(conf, current_context)
+else
+    validate_yaml_file(input_file_name, conf[:schema], conf[:validator])
+end
+

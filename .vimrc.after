@@ -35,8 +35,10 @@ function! BufferKeyBind()
     nnoremap <buffer> <space>E :lclose<Cr>
     nnoremap <buffer> <space>t :Tabularize /
     nmap <silent> <space>r <Plug>(quickrun)
-    nmap <silent> <leader>z <Plug>DashSearch
-    nmap <silent> <leader>Z <Plug>DashGlobalSearch
+    if g:os == "mac"
+        nmap <silent> <leader>z <Plug>DashSearch
+        nmap <silent> <leader>Z <Plug>DashGlobalSearch
+    endif
 endfunction
 
 function! BufferKeyBindHaskell()
@@ -119,7 +121,7 @@ let g:necoghc_enable_detailed_browse = 1
 " let g:necoghc_debug = 1
 
 
-" Neosnippet 
+" Neosnippet
 "
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
