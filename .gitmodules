@@ -67,3 +67,6 @@
 [submodule "cscope.vim"]
 	path = cscope.vim
 	url = https://github.com/vim-scripts/cscope.vim
+[submodule "neco-yaml-kwalify-schema"]
+	path = neco-yaml-kwalify-schema
+	url = https://github.com/mkasa/neco-yaml-kwalify-schema.git
