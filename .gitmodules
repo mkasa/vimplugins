@@ -43,9 +43,6 @@
 [submodule "dash.vim"]
 	path = dash.vim
 	url = https://github.com/rizzatti/dash.vim.git
-[submodule "vim2hs"]
-	path = vim2hs
-	url = https://github.com/dag/vim2hs.git
 [submodule "vim-x10"]
 	path = vim-x10
 	url = https://github.com/evandrewry/vim-x10.git
