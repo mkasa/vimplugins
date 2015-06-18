@@ -26,3 +26,6 @@ let g:neocomplete#force_omni_input_patterns.python =
          \ '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
          " alternative pattern: '\h\w*\|[^. \t]\.\w*'
 
+if filereadable(expand("~/.vimrc.before.local"))
+  source ~/.vimrc.before.local
+endif
