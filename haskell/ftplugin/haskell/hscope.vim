@@ -1,8 +1,8 @@
-set cscopeprg=hscope
 
 " hscope
 "
 if has('cscope')
+    set cscopeprg=hscope
     set csto=0
     set cst
     set nocsverb
