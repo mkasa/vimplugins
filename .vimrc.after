@@ -34,6 +34,7 @@ function! BufferKeyBind()
     nnoremap <buffer> <space>e :Errors<Cr>
     nnoremap <buffer> <space>E :lclose<Cr>
     nnoremap <buffer> <space>t :Tabularize /
+    vnoremap <buffer> <space>t :Tabularize /
     nmap <silent> <space>r <Plug>(quickrun)
     if g:os == "mac"
         nmap <silent> <leader>z <Plug>DashSearch
@@ -132,3 +133,6 @@ if has('conceal')
     set conceallevel=2 concealcursor=niv
 endif
 
+if filereadable(expand("~/.vimrc.after.local"))
+  source ~/.vimrc.after.local
+endif
