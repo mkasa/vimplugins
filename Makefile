@@ -4,7 +4,7 @@ default:
 	cd ${HOME}/.vim; rake
 
 init: ${HOME}/.vim/Rakefile default submodules
-	cd ${HOME}/.janus; ${MAKE} -c vimproc
+	cd ${HOME}/.janus; ${MAKE} -c vimproc.vim
 
 submodules:
 	cd ${HOME}/.janus; git submodule init
