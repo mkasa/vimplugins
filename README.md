@@ -10,6 +10,7 @@ My vim plugins (in addition to Janus)
 % git clone --recursive https://github.com/mkasa/vimplugins.git .janus
 % cd .janus
 % make init
+% make link
 ```
 
 # License

@@ -33,5 +33,7 @@ help:
 	echo "    make ghc"
 	echo "Initialize Python related stuff"
 	echo "    make python"
+	echo "Create symbolic links to startup files"
+	echo "    make link"
 	echo "Update plugins"
 	echo "    make"
