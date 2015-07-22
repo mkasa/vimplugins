@@ -10,6 +10,10 @@ submodules:
 	cd ${HOME}/.janus; git submodule init
 	cd ${HOME}/.janus; git submodule update
 
+link:
+	cd ${HOME}; ln -s .janus/.vimrc.before .
+	cd ${HOME}; ln -s .janus/.vimrc.after .
+
 ghc:
 	cabal install ghc-mod
 	cd lushtags
