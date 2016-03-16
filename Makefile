@@ -1,6 +1,6 @@
 
 default:
-	git submodule foreach git pull
+	git submodule foreach git pull origin master
 	cd ${HOME}/.vim; rake
 
 init: ${HOME}/.vim/Rakefile default submodules
