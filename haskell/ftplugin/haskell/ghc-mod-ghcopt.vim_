@@ -1,0 +1,12 @@
+autocmd BufWrite *.hs call s:add_lang_exts()
+
+function! s:add_lang_exts()
+    let b:ghcmod_ghc_options = []
+    let l:opts = system("ghc-options " . expand('%:p'))
+    for i in split(l:opts, " -X ")
+        call add(b:ghcmod_ghc_options, "-X" . i)
+    endfor
+    " call add(b:ghcmod_ghc_options, l:opts)
+endfunction
+
+call s:add_lang_exts()
