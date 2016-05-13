@@ -5,8 +5,8 @@ if has("win32")
     let g:os="win"
 else
     if has("unix")
-        let s:uname = system("uname")
-        if s:uname == "Darwin"
+        let s:uname = system("uname -s")
+        if s:uname == "Darwin\n"
             let g:os="mac"
         else
             let g:os="unix"
