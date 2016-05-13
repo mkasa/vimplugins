@@ -27,6 +27,10 @@ set background=dark
 " let g:solarized_termcolors=256
 colorscheme solarized
 
+" Dash
+"
+let g:dash_activate=0
+
 " Keybinds
 "
 function! BufferKeyBind()
@@ -38,8 +42,8 @@ function! BufferKeyBind()
     vnoremap <buffer> <space>t :Tabularize /
     nmap <silent> <space>r <Plug>(quickrun)
     if g:os == "mac"
-        nmap <silent> <leader>z <Plug>DashSearch
-        nmap <silent> <leader>Z <Plug>DashGlobalSearch
+        nmap <silent> <space>z <Plug>DashSearch
+        nmap <silent> <space>Z <Plug>DashGlobalSearch
     endif
 endfunction
 
@@ -112,10 +116,12 @@ function! JediSettings()
     let g:jedi#popup_on_dot = 0
     let g:jedi#completions_enabled = 0
     let g:jedi#auto_vim_configuration = 0
+    " Neocomplete + Python (should we move this to .vimrc.after?)
     if !exists('g:neocomplete#force_omni_input_patterns')
         let g:neocomplete#force_omni_input_patterns = {}
     endif
-    let g:neocomplete#force_omni_input_patterns.python = '\h\w*\|[^. \t]\.\w*'
+    let g:neocomplete#force_omni_input_patterns.python =
+             \ '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
 endfunction
 autocmd FileType python setlocal completeopt-=preview
 autocmd FileType python setlocal omnifunc=jedi#completions
@@ -143,10 +149,6 @@ endif
 "
 set diffopt+=vertical
 
-if filereadable(expand("~/.vimrc.after.local"))
-  source ~/.vimrc.after.local
-endif
-
 " Add support for markdown files in tagbar.
 "
 let g:tagbar_type_markdown = {
@@ -163,3 +165,10 @@ let g:tagbar_type_markdown = {
     \ },
     \ 'sort': 0,
     \ }
+
+" Load local init script if any
+"
+if filereadable(expand("~/.vimrc.after.local"))
+  source ~/.vimrc.after.local
+endif
+
