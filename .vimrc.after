@@ -99,10 +99,10 @@ autocmd BufEnter *.hs :call BufferKeyBindHaskell()
 
 " Unite
 "
-" let g:unite_source_haddock_browser = 'lynx'
-let g:unite_source_haddock_browser = 'env TERM=xterm-color elinks'
+let g:unite_source_haddock_browser = 'lopen'
+let g:unite_source_haddock_foreground_browser = 'env TERM=xterm-color elinks'
 call unite#custom_default_action('haddock', 'browse_remote')
-
+call unite#custom_default_action('hoogle', 'browse_remote')
 
 " Jedi
 "
