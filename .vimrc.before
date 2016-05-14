@@ -5,8 +5,8 @@ if has("win32")
     let g:os="win"
 else
     if has("unix")
-        let s:uname = system("uname")
-        if s:uname == "Darwin"
+        let s:uname = system("uname -s")
+        if s:uname == "Darwin\n"
             let g:os="mac"
         else
             let g:os="unix"
@@ -18,14 +18,7 @@ endif
 let g:neocomplete#enable_at_startup = 1
 call janus#disable_plugin('snipmate')
 
-" Neocomplete + Python (should we move this to .vimrc.after?)
-if !exists('g:neocomplete#force_omni_input_patterns')
-    let g:neocomplete#force_omni_input_patterns = {}
-endif
-let g:neocomplete#force_omni_input_patterns.python =
-         \ '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
-         " alternative pattern: '\h\w*\|[^. \t]\.\w*'
-
+" Load local init script if any
 if filereadable(expand("~/.vimrc.before.local"))
   source ~/.vimrc.before.local
 endif
