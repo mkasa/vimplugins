@@ -21,7 +21,7 @@
 	url = https://github.com/godlygeek/tabular
 [submodule "unite-haddock"]
 	path = unite-haddock
-	url = https://github.com/eagletmt/unite-haddock.git
+	url = https://github.com/mkasa/unite-haddock.git
 [submodule "unite-haskellimport"]
 	path = unite-haskellimport
 	url = https://github.com/ujihisa/unite-haskellimport.git
