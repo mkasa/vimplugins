@@ -122,6 +122,7 @@ function! JediSettings()
     endif
     let g:neocomplete#force_omni_input_patterns.python =
              \ '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+    let g:neocomplete#sources#syntax#min_keyword_length = 2
 endfunction
 autocmd FileType python setlocal completeopt-=preview
 autocmd FileType python setlocal omnifunc=jedi#completions
