@@ -59,7 +59,7 @@
 	path = AsyncCommand
 	url = https://github.com/idbrii/AsyncCommand.git
 [submodule "neco-ghc"]
-	path = neco-ghc
+	path = neco-ghc-lushtags
 	url = https://github.com/mkasa/neco-ghc
 [submodule "cscope.vim"]
 	path = cscope.vim
