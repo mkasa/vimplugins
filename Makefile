@@ -16,12 +16,16 @@ link:
 	cd ${HOME}; ln -s .janus/.vimrc.after .
 
 ghc:
-	cabal install ghc-mod
 	cd lushtags
-	cabal install
+	stack install ghc-mod
+	stack install
 
 python:
 	pip install jedi
+
+markdowntagbar:
+	cd ${HOME}/local/bin
+	wget https://raw.githubusercontent.com/jszakmeister/markdown2ctags/master/markdown2ctags.py
 
 ${HOME}/.vim/Rakefile:
 	cd ${HOME}
@@ -34,6 +38,8 @@ help:
 	echo "    make ghc"
 	echo "Initialize Python related stuff"
 	echo "    make python"
+	echo "Initialize Tagbar+Markdown"
+	echo "    make markdowntagbar"
 	echo "Create symbolic links to startup files"
 	echo "    make link"
 	echo "Update plugins"
