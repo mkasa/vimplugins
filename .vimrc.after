@@ -57,6 +57,10 @@ function! BufferKeyBindHaskell()
     nnoremap <buffer> <space>d :<C-u>UniteWithCursorWord haddock<Cr>
     nnoremap <buffer> <space>c :GhcModCheckAsync<Cr>
     nnoremap <buffer> <space>l :GhcModLintAsync<Cr>
+    nnoremap <buffer> <space>g :GhcModSigCodegen<Cr>
+    nnoremap <buffer> <space>p :GhcModSplitFunCase<Cr>
+    nnoremap <buffer> <space>t :GhcModTypeInsert<Cr>
+    nnoremap <buffer> <space>x :GhcModExpand<Cr>
     vnoremap <buffer> <space>s :!stylish-haskell<Cr>
     nnoremap <space>jfa :call cscope#findInteractive(expand('<cword>'))<CR>
     " nnoremap <space>jl :call ToggleLocationList()<CR>
