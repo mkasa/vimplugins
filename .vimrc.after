@@ -183,6 +183,13 @@ let g:repl_filetype_repl = {
     \  }
 let g:repl_no_default_keymappings = 1
 
+" QuickRun
+"
+let g:quickrun_config = {}
+let g:quickrun_config.haskell = {
+    \'command': 'stack',
+    \'cmdopt':  'runghc -- '}
+
 " Load local init script if any
 "
 if filereadable(expand("~/.vimrc.after.local"))
