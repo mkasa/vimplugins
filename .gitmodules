@@ -67,3 +67,9 @@
 [submodule "neco-yaml-kwalify-schema"]
 	path = neco-yaml-kwalify-schema
 	url = https://github.com/mkasa/neco-yaml-kwalify-schema.git
+[submodule "repl.vim"]
+	path = repl.vim
+	url = https://github.com/ujihisa/repl.vim.git
+[submodule "vimshell.vim"]
+	path = vimshell.vim
+	url = https://github.com/Shougo/vimshell.vim.git

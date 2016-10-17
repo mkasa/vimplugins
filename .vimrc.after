@@ -41,6 +41,7 @@ function! BufferKeyBind()
     nnoremap <buffer> <space>t :Tabularize /
     vnoremap <buffer> <space>T :Tabularize /:\zs\(/\)\@!<Cr>
     nmap <silent> <space>r <Plug>(quickrun)
+    nmap <silent> <space>R <Plug>(repl-run)
     if g:os == "mac"
         nmap <silent> <space>z <Plug>DashSearch
         nmap <silent> <space>Z <Plug>DashGlobalSearch
@@ -171,6 +172,16 @@ let g:tagbar_type_markdown = {
     \ },
     \ 'sort': 0,
     \ }
+
+" Add repl settings
+"
+let g:repl_filetype_repl = {
+    \       'haskell' : {
+    \           'repl' : 'stack exec -- ghci',
+    \           'opt'  : ''
+    \       }
+    \  }
+let g:repl_no_default_keymappings = 1
 
 " Load local init script if any
 "
