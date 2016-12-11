@@ -193,6 +193,10 @@ let g:quickrun_config.haskell = {
     \'command': 'stack',
     \'cmdopt':  'runghc -- '}
 
+" For faster boot
+"
+set clipboard=exclude:.*
+
 " Load local init script if any
 "
 if filereadable(expand("~/.vimrc.after.local"))
