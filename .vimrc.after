@@ -44,6 +44,8 @@ function! BufferKeyBind()
     nmap <silent> <space>r <Plug>(quickrun)
     nmap <silent> <space>R <Plug>(repl-run)
     nnoremap <buffer> <space>C :!git commit -am 'WIP'<Cr>
+    nnoremap <buffer> <space>M :!grip -b %:p &<Cr>
+    nnoremap <buffer> <space>m :make<Cr>
     nnoremap <buffer> <space>l :!tig<Cr>
     if g:os == "mac"
         nmap <silent> <space>z <Plug>DashSearch
@@ -108,7 +110,6 @@ autocmd BufEnter * :call BookmarkMapKeys()
 autocmd BufEnter NERD_tree_* :call BookmarkUnmapKeys()
 autocmd BufEnter * :call BufferKeyBind()
 autocmd BufEnter *.hs :call BufferKeyBindHaskell()
-
 
 " Unite
 "
