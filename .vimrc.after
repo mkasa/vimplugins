@@ -69,6 +69,7 @@ function! BufferKeyBindHaskell()
     nnoremap <buffer> <space>x :GhcModExpand<Cr>
     vnoremap <buffer> <space>s :!stylish-haskell<Cr>
     nnoremap <space>jfa :call cscope#findInteractive(expand('<cword>'))<CR>
+    nnoremap <leader>hc :call FlushHaskellCache()<Cr>
     " nnoremap <space>jl :call ToggleLocationList()<CR>
     nnoremap <space>jl :copen<CR>
     nnoremap <space>jfs :cs f s <C-R>=expand('<cword>')<CR><CR>
@@ -81,6 +82,13 @@ function! BufferKeyBindHaskell()
     nnoremap <space>jfi :cs f i <C-R>=expand('<cword>')<CR><CR>
 endfunction
 
+function! FlushHaskellCache()
+    if exists('*necoghc#invalidate_all_module_names')
+        call necoghc#invalidate_all_module_names()
+    else
+        " nothing
+    endif
+endfunction
 
 " Vim-bookmark
 "
