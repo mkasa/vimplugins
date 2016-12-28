@@ -192,7 +192,9 @@ let g:repl_no_default_keymappings = 1
 let g:quickrun_config = {}
 let g:quickrun_config.haskell = {
     \'command': 'stack',
-    \'cmdopt':  'runghc -- '}
+    \'cmdopt':  'runghc -- ',
+    \'args': '%{input("args> ")}',
+    \}
 
 " For faster boot
 "
