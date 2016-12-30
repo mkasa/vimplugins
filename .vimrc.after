@@ -47,6 +47,8 @@ function! BufferKeyBind()
     nnoremap <buffer> <space>M :!grip -b %:p &<Cr>
     nnoremap <buffer> <space>m :make<Cr>
     nnoremap <buffer> <space>l :!tig<Cr>
+    nnoremap <leader>od :NeoCompleteDisable<Cr>
+    nnoremap <leader>oe :NeoCompleteEnable<Cr>
     if g:os == "mac"
         nmap <silent> <space>z <Plug>DashSearch
         nmap <silent> <space>Z <Plug>DashGlobalSearch
