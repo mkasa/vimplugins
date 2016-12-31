@@ -73,3 +73,6 @@
 [submodule "vimshell.vim"]
 	path = vimshell.vim
 	url = https://github.com/Shougo/vimshell.vim.git
+[submodule "Nvim-R"]
+	path = Nvim-R
+	url = https://github.com/jalvesaq/Nvim-R
