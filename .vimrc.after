@@ -40,6 +40,8 @@ function! BufferKeyBind()
     nnoremap <buffer> <space>S :SyntasticToggleMode<Cr>
     nnoremap <buffer> <space>e :Errors<Cr>
     nnoremap <buffer> <space>E :lclose<Cr>
+    nnoremap <buffer> <space>q :copen<Cr>
+    nnoremap <buffer> <space>Q :ccl<Cr>
     nnoremap <buffer> <space>t :Tabularize /
     vnoremap <buffer> <space>t :Tabularize /
     vnoremap <buffer> <space>T :Tabularize /:\zs\(/\)\@!<Cr>
