@@ -76,18 +76,17 @@ function! BufferKeyBindHaskell()
     nnoremap <buffer> <space>s :%!stylish-haskell<Cr>
     vnoremap <buffer> <space>s :!stylish-haskell<Cr>
     inoremap <buffer> <C-f> <C-O>:call GotoSpecifiedChar()<Cr>
-    nnoremap <space>jfa :call cscope#findInteractive(expand('<cword>'))<CR>
     nnoremap <leader>hc :call FlushHaskellCache()<Cr>
-    " nnoremap <space>jl :call ToggleLocationList()<CR>
-    nnoremap <space>jl :copen<CR>
-    nnoremap <space>jfs :cs f s <C-R>=expand('<cword>')<CR><CR>
-    nnoremap <space>jfg :cs f g <C-R>=expand('<cword>')<CR><CR>
-    nnoremap <space>jfd :cs f d <C-R>=expand('<cword>')<CR><CR>
-    nnoremap <space>jfc :cs f c <C-R>=expand('<cword>')<CR><CR>
-    nnoremap <space>jft :cs f t <C-R>=expand('<cword>')<CR><CR>
-    nnoremap <space>jfe :cs f e <C-R>=expand('<cword>')<CR><CR>
-    nnoremap <space>jff :cs f f <C-R>=expand('<cword>')<CR><CR>
-    nnoremap <space>jfi :cs f i <C-R>=expand('<cword>')<CR><CR>
+    nnoremap <space>ja :call cscope#findInteractive(expand('<cword>'))<CR>
+    nnoremap <space>js :cs f s <C-R>=expand('<cword>')<CR><CR>:cw<CR>
+    nnoremap <space>jg :cs f g <C-R>=expand('<cword>')<CR><CR>
+    nnoremap <space>jd :cs f d <C-R>=expand('<cword>')<CR><CR>:cw<CR>
+    nnoremap <space>jc :cs f c <C-R>=expand('<cword>')<CR><CR>:cw<CR>
+    nnoremap <space>jt :cs f t <C-R>=expand('<cword>')<CR><CR>:cw<CR>
+    nnoremap <space>je :cs f e <C-R>=expand('<cword>')<CR><CR>:cw<CR>
+    nnoremap <space>jf :cs f f <C-R>=expand('<cword>')<CR><CR>:cw<CR>
+    nnoremap <space>ji :cs f i <C-R>=expand('<cword>')<CR><CR>:cw<CR>
+    nnoremap <space>ji :cs f a <C-R>=expand('<cword>')<CR><CR>:cw<CR>
 endfunction
 
 function! FlushHaskellCache()
