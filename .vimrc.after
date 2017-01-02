@@ -49,7 +49,7 @@ function! BufferKeyBind()
     nnoremap <buffer> <silent> <space>r <Plug>(quickrun)
     nnoremap <buffer> <silent> <space>R :Repl<Cr>
     nnoremap <buffer> <space>C :wa\|execute "!git commit -am 'WIP'" \|redraw!<Cr>
-    nnoremap <buffer> <space>M :wa\|silent! "!grip -b %:p 2>/dev/null&" \|redraw!<Cr>
+    nnoremap <buffer> <space>M :wa\|execute "!grip -b %:p 2>/dev/null&" \|redraw!<Cr>
     nnoremap <buffer> <space>m :wa\|silent! make\|cw\|redraw!<Cr>
     nnoremap <buffer> <space>l :!tig<Cr>
     nnoremap <buffer> <leader>od :NeoCompleteDisable<Cr>
@@ -252,6 +252,11 @@ let g:R_assign = 0
 let g:grammarous#default_comments_only_filetypes = {
             \ '*' : 1, 'help' : 0, 'markdown' : 0,
             \ }
+
+" pbpaste
+"
+
+nnoremap cp :r!pbpaste<Cr>
 
 " Load local init script if any
 "
