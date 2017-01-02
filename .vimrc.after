@@ -41,9 +41,11 @@ function! BufferKeyBind()
     nnoremap <buffer> <space>E :lclose<Cr>
     nnoremap <buffer> <space>q :copen<Cr>
     nnoremap <buffer> <space>Q :ccl<Cr>
-    nnoremap <buffer> <space>t :Tabularize /
-    vnoremap <buffer> <space>t :Tabularize /
-    vnoremap <buffer> <space>T :Tabularize /:\zs\(/\)\@!<Cr>
+    nnoremap <buffer> <space>t/ :Tabularize /
+    nnoremap <buffer> <space>t, :Tabularize /,/l0l1<Cr>
+    vnoremap <buffer> <space>t/ :Tabularize /
+    vnoremap <buffer> <space>t, :Tabularize /,/l0l1<Cr>
+    vnoremap <buffer> <space>t: :Tabularize /:\zs\(/\)\@!<Cr>
     nmap <buffer> <silent> <space>r <Plug>(quickrun)
     nmap <buffer> <silent> <space>R <Plug>(repl-run)
     nnoremap <buffer> <space>C :!git commit -am 'WIP'<Cr>
