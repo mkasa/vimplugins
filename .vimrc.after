@@ -53,6 +53,7 @@ function! BufferKeyBind()
     nnoremap <buffer> <space>l :!tig<Cr>
     nnoremap <leader>od :NeoCompleteDisable<Cr>
     nnoremap <leader>oe :NeoCompleteEnable<Cr>
+    map ga <Plug>(easymotion-prefix)
     if g:os == "mac"
         nmap <silent> <space>z <Plug>DashSearch
         nmap <silent> <space>Z <Plug>DashGlobalSearch
