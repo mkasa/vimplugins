@@ -2,7 +2,7 @@
 " hscope
 "
 if has('cscope')
-    set cscopeprg=hscope
+    set cscopeprg=do_at_stack_root\ hscope
     set csto=0
     set nocst
     set nocsverb
@@ -13,5 +13,5 @@ if has('cscope')
         cs add $HSCOPE_DB
     endif
     set csverb
-    autocmd BufWritePost *.hs execute 'silent !do_at_stack_root hscope -b ' . expand('<afile>:p')
+    autocmd BufWritePost *.hs execute 'silent !do_at_stack_root hscope `do_at_stack_root hxt -f -X` -b ' . expand('<afile>:p')
 endif
