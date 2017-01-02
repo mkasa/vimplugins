@@ -86,7 +86,7 @@ function! BufferKeyBindHaskell()
     nnoremap <space>je :cs f e <C-R>=expand('<cword>')<CR><CR>:cw<CR>
     nnoremap <space>jf :cs f f <C-R>=expand('<cword>')<CR><CR>:cw<CR>
     nnoremap <space>ji :cs f i <C-R>=expand('<cword>')<CR><CR>:cw<CR>
-    nnoremap <space>ji :cs f a <C-R>=expand('<cword>')<CR><CR>:cw<CR>
+    nnoremap <space>ja :cs f a <C-R>=expand('<cword>')<CR><CR>:cw<CR>
 endfunction
 
 function! FlushHaskellCache()
