@@ -13,4 +13,5 @@ if has('cscope')
         cs add $HSCOPE_DB
     endif
     set csverb
+    autocmd BufWritePost *.hs execute 'silent !do_at_stack_root hscope -b ' . expand('<afile>:p')
 endif
