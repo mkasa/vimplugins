@@ -58,6 +58,17 @@ function! BufferKeyBind()
         nmap <silent> <space>z <Plug>DashSearch
         nmap <silent> <space>Z <Plug>DashGlobalSearch
     endif
+    nnoremap <buffer> <space>up :Unite process<Cr>
+    nnoremap <buffer> <space>uG :Unite -auto-preview grammarous<Cr>
+    nnoremap <buffer> <space>ug :Unite -auto-preview grep/git<Cr>
+    nnoremap <buffer> <space>um :Unite mapping<Cr>
+    nnoremap <buffer> <space>us :Unite source<Cr>
+    nnoremap <buffer> <space>uj :Unite jump<Cr>
+    nnoremap <buffer> <space>ut :Unite tag<Cr>
+    nnoremap <buffer> <space>uP :Unite process<Cr>
+    nnoremap <buffer> <space>ub :Unite vim_bookmarks<Cr>
+    nnoremap <buffer> <space>ul :Unite launcher<Cr>
+    nnoremap <buffer> <space>uy :Unite history/yank<Cr>
 endfunction
 
 function! BufferKeyBindHaskell()
@@ -232,6 +243,12 @@ set clipboard=exclude:.*
 " For Nvim-R
 "
 let g:R_assign = 0
+
+" For Grammarous
+"
+let g:grammarous#default_comments_only_filetypes = {
+            \ '*' : 1, 'help' : 0, 'markdown' : 0,
+            \ }
 
 " Load local init script if any
 "

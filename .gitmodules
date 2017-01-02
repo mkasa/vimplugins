@@ -76,3 +76,9 @@
 [submodule "Nvim-R"]
 	path = Nvim-R
 	url = https://github.com/jalvesaq/Nvim-R
+[submodule "neoyank.vim"]
+	path = neoyank.vim
+	url = https://github.com/Shougo/neoyank.vim
+[submodule "unite-tags"]
+	path = unite-tag
+	url = https://github.com/tsukkee/unite-tag.git
