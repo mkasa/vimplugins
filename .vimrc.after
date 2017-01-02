@@ -48,7 +48,6 @@ function! BufferKeyBind()
     vnoremap <buffer> <space>t: :Tabularize /:\zs\(/\)\@!<Cr>
     nnoremap <buffer> <silent> <space>r <Plug>(quickrun)
     nnoremap <buffer> <silent> <space>R :Repl<Cr>
-    nnoremap <buffer> <silent> <space>RR <Plug>(repl-run)
     nnoremap <buffer> <space>C :wa\|execute "!git commit -am 'WIP'" \|redraw!<Cr>
     nnoremap <buffer> <space>M :wa\|silent! "!grip -b %:p 2>/dev/null&" \|redraw!<Cr>
     nnoremap <buffer> <space>m :wa\|silent! make\|cw\|redraw!<Cr>
