@@ -77,7 +77,7 @@ function! BufferKeyBindHaskell()
     vnoremap <buffer> <space>s :!stylish-haskell<Cr>
     inoremap <buffer> <C-f> <C-O>:call GotoSpecifiedChar()<Cr>
     nnoremap <leader>hc :call FlushHaskellCache()<Cr>
-    nnoremap <space>ja :call cscope#findInteractive(expand('<cword>'))<CR>
+    nnoremap <space>jk :call cscope#findInteractive(expand('<cword>'))<CR>
     nnoremap <space>js :cs f s <C-R>=expand('<cword>')<CR><CR>:cw<CR>
     nnoremap <space>jg :cs f g <C-R>=expand('<cword>')<CR><CR>
     nnoremap <space>jd :cs f d <C-R>=expand('<cword>')<CR><CR>:cw<CR>
