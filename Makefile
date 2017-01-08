@@ -23,8 +23,9 @@ python:
 	pip install jedi
 
 markdowntagbar:
-	cd ${HOME}/local/bin
-	wget https://raw.githubusercontent.com/jszakmeister/markdown2ctags/master/markdown2ctags.py
+	-mkdir -p ${HOME}/.local/bin
+	cd ${HOME}/.local/bin; wget https://raw.githubusercontent.com/jszakmeister/markdown2ctags/master/markdown2ctags.py
+	cd ${HOME}/.local/bin; chmod 755 markdown2ctags.py
 
 ${HOME}/.vim/Rakefile:
 	cd ${HOME}
@@ -36,7 +37,8 @@ help:
 	echo "Initialize ghc related stuff"
 	echo "    make ghc"
 	echo "Initialize Python related stuff"
-	echo "    make python"
+	echo "    make python       (with a user account)"
+	echo "    sudo make python  (with root)"
 	echo "Initialize Tagbar+Markdown"
 	echo "    make markdowntagbar"
 	echo "Create symbolic links to startup files"
