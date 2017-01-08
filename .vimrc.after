@@ -73,6 +73,16 @@ function! BufferKeyBind()
     nnoremap <buffer> <space>uy :Unite history/yank<Cr>
     nnoremap <buffer> q: <NOP>
     nnoremap <buffer> <F5> q:
+    nnoremap <buffer> <space>jk :call cscope#findInteractive(expand('<cword>'))<CR>
+    nnoremap <buffer> <space>js :cs f s <C-R>=expand('<cword>')<CR><CR>:cw<CR>
+    nnoremap <buffer> <space>jg :cs f g <C-R>=expand('<cword>')<CR><CR>
+    nnoremap <buffer> <space>jd :cs f d <C-R>=expand('<cword>')<CR><CR>:cw<CR>
+    nnoremap <buffer> <space>jc :cs f c <C-R>=expand('<cword>')<CR><CR>:cw<CR>
+    nnoremap <buffer> <space>jt :cs f t <C-R>=expand('<cword>')<CR><CR>:cw<CR>
+    nnoremap <buffer> <space>je :cs f e <C-R>=expand('<cword>')<CR><CR>:cw<CR>
+    nnoremap <buffer> <space>jf :cs f f <C-R>=expand('<cword>')<CR><CR>:cw<CR>
+    nnoremap <buffer> <space>ji :cs f i <C-R>=expand('<cword>')<CR><CR>:cw<CR>
+    nnoremap <buffer> <space>ja :cs f a <C-R>=expand('<cword>')<CR><CR>:cw<CR>
 endfunction
 
 function! BufferKeyBindHaskell()
@@ -93,16 +103,6 @@ function! BufferKeyBindHaskell()
     vnoremap <buffer> <space>s :!stylish-haskell<Cr>
     inoremap <buffer> <C-f> <C-O>:call GotoSpecifiedChar()<Cr>
     nnoremap <buffer> <leader>hc :call FlushHaskellCache()<Cr>
-    nnoremap <buffer> <space>jk :call cscope#findInteractive(expand('<cword>'))<CR>
-    nnoremap <buffer> <space>js :cs f s <C-R>=expand('<cword>')<CR><CR>:cw<CR>
-    nnoremap <buffer> <space>jg :cs f g <C-R>=expand('<cword>')<CR><CR>
-    nnoremap <buffer> <space>jd :cs f d <C-R>=expand('<cword>')<CR><CR>:cw<CR>
-    nnoremap <buffer> <space>jc :cs f c <C-R>=expand('<cword>')<CR><CR>:cw<CR>
-    nnoremap <buffer> <space>jt :cs f t <C-R>=expand('<cword>')<CR><CR>:cw<CR>
-    nnoremap <buffer> <space>je :cs f e <C-R>=expand('<cword>')<CR><CR>:cw<CR>
-    nnoremap <buffer> <space>jf :cs f f <C-R>=expand('<cword>')<CR><CR>:cw<CR>
-    nnoremap <buffer> <space>ji :cs f i <C-R>=expand('<cword>')<CR><CR>:cw<CR>
-    nnoremap <buffer> <space>ja :cs f a <C-R>=expand('<cword>')<CR><CR>:cw<CR>
 endfunction
 
 function! FlushHaskellCache()
