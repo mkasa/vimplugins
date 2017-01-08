@@ -65,7 +65,8 @@ function! BufferKeyBind()
     nnoremap <buffer> <space>um :Unite mapping<Cr>
     nnoremap <buffer> <space>us :Unite source<Cr>
     nnoremap <buffer> <space>uj :Unite jump<Cr>
-    nnoremap <buffer> <space>ut :Unite tag<Cr>
+    nnoremap <buffer> <space>ut :UniteWithCursorWord tag<Cr>
+    nnoremap <buffer> <space>uT :Unite tag<Cr>
     nnoremap <buffer> <space>uP :Unite process<Cr>
     nnoremap <buffer> <space>ub :Unite vim_bookmarks<Cr>
     nnoremap <buffer> <space>ul :Unite launcher<Cr>
