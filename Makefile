@@ -16,9 +16,8 @@ link:
 	cd ${HOME}; ln -s .janus/.vimrc.after .
 
 ghc:
-	cd lushtags
 	stack install ghc-mod
-	stack install
+	cd lushtags; stack install
 
 python:
 	pip install jedi
