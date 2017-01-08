@@ -259,6 +259,23 @@ let g:grammarous#default_comments_only_filetypes = {
 
 nnoremap cp :r!pbpaste<Cr>
 
+" vim-multiple-cursor
+"
+
+" The funcions below prevents vim-multiple-cursor with conflicting with
+" neocomplete
+function! Multiple_cursors_before()
+  if exists(':NeoCompleteLock')==2
+    exe 'NeoCompleteLock'
+  endif
+endfunction
+
+function! Multiple_cursors_after()
+  if exists(':NeoCompleteUnlock')==2
+    exe 'NeoCompleteUnlock'
+  endif
+endfunction
+
 " Load local init script if any
 "
 if filereadable(expand("~/.vimrc.after.local"))
