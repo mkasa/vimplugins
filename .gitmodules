@@ -82,3 +82,6 @@
 [submodule "unite-tags"]
 	path = unite-tag
 	url = https://github.com/tsukkee/unite-tag.git
+[submodule "vim-pbcopy"]
+	path = vim-pbcopy
+	url = https://github.com/ahw/vim-pbcopy.git
