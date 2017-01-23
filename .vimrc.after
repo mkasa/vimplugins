@@ -268,12 +268,14 @@ function! Multiple_cursors_before()
   if exists(':NeoCompleteLock')==2
     exe 'NeoCompleteLock'
   endif
+  " call youcompleteme#DisableCursorMovedAutocommands()
 endfunction
 
 function! Multiple_cursors_after()
   if exists(':NeoCompleteUnlock')==2
     exe 'NeoCompleteUnlock'
   endif
+  " call youcompleteme#EnableCursorMovedAutocommands()
 endfunction
 
 " Load local init script if any
