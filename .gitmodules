@@ -85,3 +85,6 @@
 [submodule "vim-pbcopy"]
 	path = vim-pbcopy
 	url = https://github.com/ahw/vim-pbcopy.git
+[submodule "vim-clang"]
+	path = vim-clang
+	url = https://github.com/justmao945/vim-clang.git
