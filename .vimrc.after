@@ -159,11 +159,10 @@ function! JediSettings()
     let g:jedi#auto_vim_configuration = 0
     " Neocomplete + Python (should we move this to .vimrc.after?)
     if !exists('g:neocomplete#force_omni_input_patterns')
-        let g:neocomplete#force_omni_input_patterns = {}
+      let g:neocomplete#force_omni_input_patterns = {}
     endif
     let g:neocomplete#force_omni_input_patterns.python =
              \ '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
-    let g:neocomplete#sources#syntax#min_keyword_length = 2
 endfunction
 autocmd FileType python setlocal completeopt-=preview
 autocmd FileType python setlocal omnifunc=jedi#completions
@@ -277,6 +276,22 @@ function! Multiple_cursors_after()
   endif
   " call youcompleteme#EnableCursorMovedAutocommands()
 endfunction
+
+" vim-clang
+"
+let g:clang_auto = 0
+let g:clang_c_completeopt="longest,menu"
+let g:clang_cpp_completeopt="longest,menu"
+let g:neocomplete#enable_complete_select=0
+if !exists('g:neocomplete#force_omni_input_patterns')
+  let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_omni_input_patterns.c =
+      \ '[^.[:digit:] *\t]\%(\.\|->\)\w*'
+let g:neocomplete#force_omni_input_patterns.cpp =
+      \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+let g:clang_cpp_options = '-std=c++11 -stdlib=libc++'
+let g:neocomplete#sources#syntax#min_keyword_length = 2
 
 " Load local init script if any
 "
