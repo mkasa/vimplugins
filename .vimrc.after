@@ -51,7 +51,7 @@ function! BufferKeyBind()
     nnoremap <buffer> <space>C :wa\|execute "!git commit -am 'WIP'" \|redraw!<Cr>
     nnoremap <buffer> <space>M :wa\|execute "!grip -b %:p 2>/dev/null&" \|redraw!<Cr>
     nnoremap <buffer> <space>m :wa\|silent! make\|cw\|redraw!<Cr>
-    nnoremap <buffer> <space>l :!tig<Cr>
+    nnoremap <buffer> <space>L :!tig<Cr>
     nnoremap <buffer> <leader>od :NeoCompleteDisable<Cr>
     nnoremap <buffer> <leader>oe :NeoCompleteEnable<Cr>
     map <buffer> ga <Plug>(easymotion-prefix)
