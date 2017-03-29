@@ -1,4 +1,4 @@
-autocmd BufWrite *.hs call s:add_lang_exts()
+autocmd BufWritePost *.hs call s:add_lang_exts()
 
 function! s:add_lang_exts()
     let b:ghcmod_ghc_options = []
