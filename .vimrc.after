@@ -14,9 +14,15 @@ let g:syntastic_check_on_wq = 0
 " ghc-mod support was dropped from Syntastic 3.8. See https://github.com/vim-syntastic/syntastic/issues/1576
 " let g:syntastic_haskell_checkers = ['ghc-mod']
 let g:syntastic_x10_checkers = ['x10cpp']
+" let g:syntastic_python_checkers = ['python']
+" let g:syntastic_python3_checkers = ['python']
 let g:syntastic_mode_map = {
      \ "mode": "active",
      \ "passive_filetypes": ["haskell", "x10"] }
+let b:syntastic_python_python_exec =
+  \ syntastic#util#parseShebang()['exe']  =~# '\m\<python3'
+  \ ? 'python3'
+  \ : 'python'
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
