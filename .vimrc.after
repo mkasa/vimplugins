@@ -19,10 +19,10 @@ let g:syntastic_x10_checkers = ['x10cpp']
 let g:syntastic_mode_map = {
      \ "mode": "active",
      \ "passive_filetypes": ["haskell", "x10"] }
-let b:syntastic_python_python_exec =
-  \ syntastic#util#parseShebang()['exe']  =~# '\m\<python3'
-  \ ? 'python3'
-  \ : 'python'
+" let b:syntastic_python_python_exec =
+  " \ syntastic#util#parseShebang(bufnr(''))['exe']  =~# '\m\<python3'
+  " \ ? 'python3'
+  " \ : 'python'
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
