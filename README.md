@@ -7,6 +7,10 @@ My vim plugins (in addition to Janus)
 % cd
 % git --version
 (make sure that you have git 1.6.5 or later)
+% gcc --version
+(make sure that you have a C compiler)
+% rake --version
+(make sure that you have rake on your system)
 % git clone --recursive https://github.com/mkasa/vimplugins.git .janus
 % cd .janus
 % make init
