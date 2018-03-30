@@ -17,6 +17,14 @@ My vim plugins (in addition to Janus)
 % make link
 ```
 
+## For RHEL 7 users
+To prepare the requisites:
+
+```
+% sudo yum install -y gvim ruby gcc make git
+% gem install rake
+```
+
 # License
 Individual submodules have different licenses.
 Other materials can be distributed under MIT License.
