@@ -25,6 +25,27 @@ To prepare the requisites:
 % gem install rake
 ```
 
+Note that if you install vim by `sudo yum install vim`,
+the installed vim is not compatible to this set of modules
+because clientserver option is not set when the package is
+compiled. Use `gvim` package and do
+
+```
+alias vi=vimx
+```
+
+# Additional dependencies
+There are additional dependencies when you use modules.
+
+## When editing C source files
+You need to install cscope.
+
+## When editing Haskell source files
+
+
+## WHen editing YAML files with a Kwalify schema
+You need to install Kwalify.
+
 # License
 Individual submodules have different licenses.
 Other materials can be distributed under MIT License.
