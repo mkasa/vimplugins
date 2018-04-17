@@ -88,3 +88,6 @@
 [submodule "vim-clang"]
 	path = vim-clang
 	url = https://github.com/justmao945/vim-clang.git
+[submodule "vim-cheatsheet"]
+	path = vim-cheatsheet
+	url = https://github.com/reireias/vim-cheatsheet.git
