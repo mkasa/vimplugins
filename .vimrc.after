@@ -306,6 +306,14 @@ let g:neocomplete#sources#syntax#min_keyword_length = 2
 let g:cheatsheet#cheat_file = '~/.vim-cheatsheet.md'
 
 
+" CTRL-P
+"
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v(venv|build|dist|__pycache__|\.git|.*\.egg-info)$',
+  \ 'file': '\v(tags|__Tagbar__|cscope.out)$',
+  \ 'link': '\v$',
+  \ }
+
 " Load local init script if any
 "
 if filereadable(expand("~/.vimrc.after.local"))
