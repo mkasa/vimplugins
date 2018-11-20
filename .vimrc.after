@@ -301,6 +301,11 @@ let g:clang_cpp_options = '-std=c++11 -stdlib=libc++'
 let g:neocomplete#sources#syntax#min_keyword_length = 2
 
 
+" typescript
+let g:neocomplete#force_omni_input_patterns.typescript =
+      \ '[^.[:digit:] *\t]\%(\.\)\w*'
+let g:tsuquyomi_completion_detail = 1
+
 " vim-cheatsheet
 "
 let g:cheatsheet#cheat_file = '~/.vim-cheatsheet.md'
