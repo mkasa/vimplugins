@@ -302,9 +302,28 @@ let g:neocomplete#sources#syntax#min_keyword_length = 2
 
 
 " typescript
+"
 let g:neocomplete#force_omni_input_patterns.typescript =
-      \ '[^.[:digit:] *\t]\%(\.\)\w*'
+      \ '[^.[:digit:] *\t]\%(\.\)\w*\|from ''\w*'
 let g:tsuquyomi_completion_detail = 1
+let g:tagbar_type_typescript = {
+  \ 'ctagsbin' : 'tstags',
+  \ 'ctagsargs' : '-f-',
+  \ 'kinds': [
+    \ 'e:enums:0:1',
+    \ 'f:function:0:1',
+    \ 't:typealias:0:1',
+    \ 'M:Module:0:1',
+    \ 'I:import:0:1',
+    \ 'i:interface:0:1',
+    \ 'C:class:0:1',
+    \ 'm:method:0:1',
+    \ 'p:property:0:1',
+    \ 'v:variable:0:1',
+    \ 'c:const:0:1',
+  \ ],
+  \ 'sort' : 0
+  \ }
 
 " vim-cheatsheet
 "
@@ -314,7 +333,7 @@ let g:cheatsheet#cheat_file = '~/.vim-cheatsheet.md'
 " CTRL-P
 "
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v(venv|build|dist|__pycache__|\.git|.*\.egg-info)$',
+  \ 'dir':  '\v(venv|build|dist|__pycache__|\.git|.*\.egg-info|node_modules)$',
   \ 'file': '\v(tags|__Tagbar__|cscope.out)$',
   \ 'link': '\v$',
   \ }
