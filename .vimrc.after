@@ -49,13 +49,12 @@ function! BufferKeyBind()
     nnoremap <buffer> <space>Q :ccl<Cr>
     nnoremap <buffer> <space>t/ :Tabularize /
     nnoremap <buffer> <space>t, :Tabularize /,/l0l1<Cr>
-    vnoremap <buffer> <space>t/ :Tabularize /
-    vnoremap <buffer> <space>t, :Tabularize /,/l0l1<Cr>
     vnoremap <buffer> <space>t: :Tabularize /:\zs\(/\)\@!<Cr>
     nnoremap <buffer> <silent> <space>r :QuickRun<Cr>
     nnoremap <buffer> <silent> <space>4 :<C-u>bw! \[quickrun\ output\]<Cr>
     nnoremap <buffer> <silent> <space>R :Repl<Cr>
-    nnoremap <buffer> <space>C :wa\|execute "!git commit -am 'WIP'" \|redraw!<Cr>
+    nnoremap <buffer> <space>W :wa\|execute "!git commit -am 'WIP'" \|redraw!<Cr>
+    nnoremap <buffer> <space>C :wa\|execute "!git commit -a" \|redraw!<Cr>
     nnoremap <buffer> <space>M :wa\|execute "!grip -b %:p 2>/dev/null&" \|redraw!<Cr>
     nnoremap <buffer> <space>m :wa\|silent! make\|cw\|redraw!<Cr>
     nnoremap <buffer> <space>L :!tig<Cr>
@@ -106,7 +105,7 @@ function! BufferKeyBindHaskell()
     nnoremap <buffer> <space>p :GhcModSplitFunCase<Cr>
     nnoremap <buffer> <space>t :GhcModTypeInsert<Cr>
     nnoremap <buffer> <space>x :GhcModExpand<Cr>
-    nnoremap <buffer> <space>s :%!stylish-haskell<Cr>
+    nnoremap <buffer> <space>S :%!stylish-haskell<Cr>
     vnoremap <buffer> <space>s :!stylish-haskell<Cr>
     inoremap <buffer> <C-f> <C-O>:call GotoSpecifiedChar()<Cr>
     nnoremap <buffer> <leader>hc :call FlushHaskellCache()<Cr>
