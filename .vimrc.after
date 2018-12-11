@@ -324,6 +324,24 @@ let g:tagbar_type_typescript = {
   \ 'sort' : 0
   \ }
 
+" golang
+"
+function! BufferKeyBindGoLang()
+    nnoremap <buffer> <space>B :GoBuild<Cr>
+    nnoremap <buffer> <space>T :GoTest<Cr>
+    nnoremap <buffer> <space>K :GoDocBrowser<Cr>
+    nnoremap <buffer> <space>i :GoImports<Cr>
+    nnoremap <buffer> <space>ui :Unite -auto-preview go/import<Cr>
+endfunction
+autocmd BufEnter *.go :call BufferKeyBindGoLang()
+autocmd FileType go setlocal completeopt-=preview
+autocmd FileType go let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#force_omni_input_patterns.go =
+        \ '\h\w\.\w*'
+let g:go_gocode_unimported_packages = 0
+let g:syntastic_go_checkers = ['go']
+
+
 " vim-cheatsheet
 "
 let g:cheatsheet#cheat_file = '~/.vim-cheatsheet.md'

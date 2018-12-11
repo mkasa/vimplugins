@@ -97,3 +97,9 @@
 [submodule "vim-tslint"]
 	path = vim-tslint
 	url = https://github.com/heavenshell/vim-tslint.git
+[submodule "vim-go"]
+	path = vim-go
+	url = https://github.com/fatih/vim-go
+[submodule "unite-go-import.vim"]
+	path = unite-go-import.vim
+	url = https://github.com/rhysd/unite-go-import.vim.git
