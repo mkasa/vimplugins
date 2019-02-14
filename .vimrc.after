@@ -262,7 +262,48 @@ let g:grammarous#default_comments_only_filetypes = {
 " pbpaste
 "
 
-nnoremap cp :r!pbpaste<Cr>
+nnoremap <silent> cp :r!pbpaste<Cr>
+nnoremap <silent> cy :call PbCopy()<Cr>
+nnoremap <silent> cmy :call PbCopyMD()<CR>
+nnoremap <silent> chy :call CopyAsHTML()<CR>
+
+function! CopyAsHTML() abort
+  '<,'>TOhtml
+  w !textutil -format html -convert rtf -stdin -stdout | pbcopy
+  bdelete!
+endfunction
+
+function! GetVisualSelection()
+    "" https://stackoverflow.com/questions/1533565/how-to-get-visually-selected-text-in-vimscript
+    let [line_start, column_start] = getpos("'<")[1:2]
+    let [line_end, column_end] = getpos("'>")[1:2]
+    let lines = getline(line_start, line_end)
+    if len(lines) == 0
+        return ''
+    endif
+    let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
+    let lines[0] = lines[0][column_start - 1:]
+    return join(lines, "\n")
+endfunction
+
+" pbcopy
+"
+function! PbCopy()
+    let l:selection = GetVisualSelection()
+    let res = system('pbcopy', l:stdin)
+endfunction
+
+" pbcopy for Markdown
+"
+function! PbCopyMD()
+    let l:file_type = &ft
+    let l:file_name = expand('%:t')
+    let l:line_num = line("'<") . '-' . line("'>")
+    let l:file_range = l:file_type . ':' . l:file_name . '/' . l:line_num
+    let l:selection = GetVisualSelection()
+    let l:stdin = "```" . l:file_range . "\n" . l:selection . "\n```\n"
+    let res = system('pbcopy', l:stdin)
+endfunction
 
 " vim-multiple-cursor
 "
@@ -352,6 +393,25 @@ function! BufferKeyBindTypeScript()
     nnoremap <buffer> <space>L :TslintFix<Cr>
 endfunction
 autocmd BufEnter *.hs :call BufferKeyBindTypeScript()
+
+" golang
+"
+function! BufferKeyBindGoLang()
+    nnoremap <buffer> <space>B :GoBuild<Cr>
+    nnoremap <buffer> <space>T :GoTest<Cr>
+    nnoremap <buffer> <space>K :GoDocBrowser<Cr>
+    nnoremap <buffer> <space>i :GoImports<Cr>
+    nnoremap <buffer> <space>d :GoDef<Cr>
+    nnoremap <buffer> <space>ui :Unite -auto-preview go/import<Cr>
+endfunction
+autocmd BufEnter *.go :call BufferKeyBindGoLang()
+autocmd FileType go setlocal completeopt-=preview
+autocmd FileType go let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#force_omni_input_patterns.go =
+        \ '\h\w\.\w*'
+let g:go_gocode_unimported_packages = 0
+let g:syntastic_go_checkers = ['go']
+
 
 " vim-cheatsheet
 "
