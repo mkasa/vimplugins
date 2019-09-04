@@ -103,3 +103,6 @@
 [submodule "unite-go-import.vim"]
 	path = unite-go-import.vim
 	url = https://github.com/rhysd/unite-go-import.vim.git
+[submodule "tabnine-vim"]
+	path = tabnine-vim
+	url = https://github.com/zxqfl/tabnine-vim
