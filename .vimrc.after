@@ -91,6 +91,17 @@ function! BufferKeyBind()
     nnoremap <buffer> <space>ja :cs f a <C-R>=expand('<cword>')<CR><CR>:cw<CR>
 endfunction
 
+function! BufferKeyBindGo()
+    nnoremap <buffer> <space>b :GoBuild<Cr>
+    nnoremap <buffer> <space>T :GoTest<Cr>
+    nnoremap <buffer> <space>F :GoTestFunc<Cr>
+    nnoremap <buffer> <space>d :GoDef<Cr>
+    nnoremap <buffer> <space>i :GoImport<Cr>
+    nnoremap <buffer> <space>D :GoDrop<Cr>
+    nnoremap <buffer> <space>K :GoDoc<Cr>
+    nnoremap <buffer> <space>n :GoRename<Cr>
+endfunction
+
 function! BufferKeyBindHaskell()
     nnoremap <buffer> <Nul> :GhcModType<Return>
     nnoremap <buffer> <space>I :<C-u>Unite haskellimport<Cr>
@@ -147,6 +158,7 @@ autocmd BufEnter * :call BookmarkMapKeys()
 autocmd BufEnter NERD_tree_* :call BookmarkUnmapKeys()
 autocmd BufEnter * :call BufferKeyBind()
 autocmd BufEnter *.hs :call BufferKeyBindHaskell()
+autocmd BufEnter *.go :call BufferKeyBindGo()
 
 " Unite
 "
